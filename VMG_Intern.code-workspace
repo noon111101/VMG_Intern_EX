@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "VMG_Intern",
+			"path": ".."
+		},
+		{
+			"name": "themify-icons",
+			"path": "..\\..\\Downloads\\themify-icons"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "VMG_Intern"
+	}
+}
