@@ -1,7 +1,15 @@
 package com.vmg.TH2.form;
 
+import com.vmg.TH2.dao.BankAccountDAO;
+import com.vmg.TH2.exception.BankTransactionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 public class SendMoneyForm {
 
+    @Autowired
+    BankAccountDAO bankAccountDAO;
     private Long fromAccountId;
     private Long toAccountId;
     private Double amount;
@@ -39,5 +47,12 @@ public class SendMoneyForm {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+    @Transactional(propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = BankTransactionException.class)
+    public void sendMoney(Long fromAccountId, Long toAccountId,
+                          double amount) throws BankTransactionException {
 
+        bankAccountDAO.addAmount(toAccountId, amount);
+        bankAccountDAO.addAmount(fromAccountId, -amount);
+    }
 }
