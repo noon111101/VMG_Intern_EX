@@ -1,4 +1,4 @@
-package com.zetcode;
+package com;
 
 import com.zetcode.model.City;
 import com.zetcode.repository.CityRepository;
