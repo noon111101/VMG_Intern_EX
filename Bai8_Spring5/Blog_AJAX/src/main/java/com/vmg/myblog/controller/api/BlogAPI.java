@@ -4,6 +4,7 @@ import com.vmg.myblog.exception.FileNullException;
 import com.vmg.myblog.model.Blog;
 import com.vmg.myblog.model.BlogDTO;
 import com.vmg.myblog.model.BlogForm;
+import com.vmg.myblog.repository.IBlogRepository;
 import com.vmg.myblog.service.IBlogService;
 import com.vmg.myblog.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class BlogAPI {
     IBlogService blogService;
     @Autowired
     ICategoryService categoryService;
+    @Autowired
+    IBlogRepository iBlogRepository;
 
     @PostMapping(value = "create")
     public ResponseEntity<?> save(@Valid @ModelAttribute BlogForm blogForm, BindingResult bindingResult) {
@@ -56,5 +59,10 @@ public class BlogAPI {
         Page<Blog> blogs=blogService.findBlogPage(pageable);
         return new ResponseEntity<>(blogs,HttpStatus.OK);
     };
+    @GetMapping("blogs")
+    public ResponseEntity<List<Blog>> findAll(){
+        return new ResponseEntity<>(iBlogRepository.findAll(),HttpStatus.OK);
+    }
+
 
 }

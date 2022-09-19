@@ -56,5 +56,5 @@ public class BlogAPI {
         Page<Blog> blogs=blogService.findBlogPage(pageable);
         return new ResponseEntity<>(blogs,HttpStatus.OK);
     };
-
+    
 }

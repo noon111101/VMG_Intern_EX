@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blogs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<form action="/search">
+    Search by first name:
+    <input name="s" type="text"/>
+    <input type="submit" value="Search"/>
+</form><br/>
+<div class="container mt-3">
+    <h2 th:if="${blogs.size()} == 0">No blogs yet!</h2>
+    <div th:if="${blogs.size()} != 0">
+        <select id="categories" class="form-select">
+            <option value="">Choose category</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+            >[[${category.name}]]
+            </option>
+        </select>
+        <br>
+        <button type="button" id="search" onclick="search()" class="btn btn-info">Tìm kiếm</button>
+        <br>
+    </div>
+    <div class="table-responsive">
+        <table th:if="${blogs.size()} != 0" class="table table-bordered table-hover">
+            <thead class="table-success">
+            <tr>
+                <th>Check</th>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Cover</th>
+                <th>Content</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody th:each="blog : ${blogs}" >
+            <tr>
+                <td id="mycontent">
+
+                </td>
+
+                <th class="text-center">
+                    <button type="button"
+                            th:data-id="${blog.id}" th:data-title="${blog.title}"
+                            th:data-categoryID="${blog.categoryId}" th:data-content="${blog.content}"
+                            onclick="showUpdateModal(this.getAttribute('data-id'),this.getAttribute('data-title')
+                                ,this.getAttribute('data-content'),this.getAttribute('data-categoryID'))"
+                            class="btn btn-primary" id="edit"
+                            data-bs-toggle="modal" data-bs-target="#myModal">
+                        Edit
+                    </button>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button type="submit" data-bs-toggle="modal" data-bs-target="#myModal"
+            onclick="showCreateModal()" id="create" class="btn btn-primary">Create
+    </button>
+    <button th:if="${blogs.size()} != 0" type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+
+
+</div>
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="file-upload-form" name="blogForm" th:object="${blog1}">
+                    <select th:field="*{categoryId}" name="categoryId" id="categoryId" class="form-select mb-3 mt-3">
+                        <option value="">Choose category</option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}"
+                        >[[${category.name}]]
+                        </option>
+                    </select>
+                    <div class="mb-3 mt-3">
+                        <span id="error-categoryId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="title" class="form-label">Title:</label>
+                        <input th:field="*{title}" type="text" class="form-control" id="title" placeholder="Enter title" name="title">
+                        <div>
+                            <span id="error-title" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="files" class="form-label">Cover:</label>
+                        <input name="cover" id="files" type="file" multiple>
+                        <div>
+                            <span id="error-cover" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content:</label>
+                        <textarea th:field="*{content}" class="form-control" id="content" rows="5" name="content"> </textarea>
+                        <div >
+                            <span id="error-content" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="id" name="id">
+                    <button type="submit" id="btnSaveOrUpdate" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <h2>[[${message}]]</h2>
+</div>
+
+<script>
+    	$(document).ready(function() {
+			$.getJSON('http://localhost:8080/api/blogs', function(json) {
+				var tr=[];
+				for (var i = 0; i < json.length; i++) {
+					tr.push('<input type=\'checkbox\'></input>></td>');
+				    tr.push('<td>' + json[i].category.name + '</td>');
+				    tr.push('<td><img src=\'/api/files/images'+json[i].cover+'\'></img>'+'</td>');
+					tr.push('<td>' + json[i].title + '</td>');
+					tr.push('<td>' + json[i].content );
+
+				}
+				$('#mycontent').append($(tr.join('')));
+			});
+
+
+
+
+    let vo = document.querySelector.bind(document);
+    const saveOrUpdate = document.querySelector('#btnSaveOrUpdate');
+    const id = document.querySelector('#id');
+    const title = document.querySelector('#title');
+    const content = document.querySelector('#content');
+    const categoryId = document.querySelector('#categoryId');
+
+    // const search = document.querySelector('#search');
+    function search() {
+        const categoryId = document.querySelector('#categories').value;
+        $.ajax({
+            url: 'http://localhost:8080/index?cateId=' + categoryId,
+            type: 'GET',
+            success: function (result) {
+                window.location.href = 'http://localhost:8080/index?cateId=' + categoryId;
+            },
+            error: function (error) {
+                swal.fire({
+                    title: "Lỗi!",
+                    text: "Tim kiem that thất bại!",
+                    icon: "error",
+                });
+            }
+        });
+    }
+
+    function showUpdateModal(blogId, blogTitle, blogContent, categoryid) {
+        id.value = blogId;
+        title.value = blogTitle;
+        content.value = blogContent;
+        categoryId.value = categoryid;
+        saveOrUpdate.innerText = "Update";
+    }
+
+    function showCreateModal() {
+        id.value = "";
+        title.value = "";
+        // cover.value = "";
+        content.value = "";
+        saveOrUpdate.innerText = "Save";
+    }
+
+    $(document).ready(function () {
+        $("#file-upload-form").on("submit", function (e) {
+            // cancel the default behavior
+            e.preventDefault();
+            let form = $('#file-upload-form')[0];
+            let formData = new FormData(form);
+            if (saveOrUpdate.innerText == "Save") {
+                (async () => {
+                    const {value: formValues} = await Swal.fire({
+                        title: 'Thêm blog ngay?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Them Blog',
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            return true;
+                        }
+                    })
+
+                    if (formValues) {
+                        createBlog(formData);
+                    }
+
+                })()
+            } else if (saveOrUpdate.innerText == "Update") {
+                (async () => {
+                    const {value: formValues} = await Swal.fire({
+                        title: 'Update blog ngay?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Update Blog',
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            return {
+                                "title": document.getElementById('title').value,
+                                "content": document.getElementById('content').value,
+                            }
+                        }
+                    })
+                    if (formValues) {
+                        updateBlog(formData);
+                    }
+                })()
+            }
+
+        });
+    });
+
+    function createBlog(data) {
+        $.ajax({
+            url: 'http://localhost:8080/api/create',
+            enctype: 'multipart/form-data',
+            type: 'POST',
+            data: data,
+            contentType: false,
+            processData: false,
+
+            success: function (result) {
+                Swal.fire({
+                    title: 'Thêm thành công!',
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // window.location.href = "http://localhost:8080/index";
+                })
+            },
+            error: function (error) {
+                let errors = error.responseJSON;
+                errors.forEach(e => {
+                    if(e.field == "title") {
+                        vo('#error-title').innerText = e.field + " "  + e.defaultMessage;
+                    }
+                    if(e.field == "categoryId") {
+                        vo('#error-categoryId').innerText = e.field + " "  + e.defaultMessage;
+                    }
+                    if(e.field == "content") {
+                        vo('#error-content').innerText = e.field + " " + e.defaultMessage;
+                    }
+                    if(e.field == "files") {
+                        vo('#error-cover').innerText = e.field + " " + e.defaultMessage;
+                    }
+                });
+                swal.fire({
+                    title: "Lỗi!",
+                    text: "Thêm thất bại!",
+                    icon: "error",
+                });
+            }
+        });
+    }
+
+    function updateBlog(data) {
+        $.ajax({
+            url: 'http://localhost:8080/api/update',
+            enctype: 'multipart/form-data',
+            type: 'PUT',
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                Swal.fire({
+                    title: 'Update thành công!',
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = "http://localhost:8080/index";
+                })
+            },
+            error: function (error) {
+                swal.fire({
+                    title: "Lỗi!",
+                    text: "Update thất bại!",
+                    icon: "error",
+                });
+            }
+        });
+    }
+
+    ///////////////
+
+    $("#btnDelete").click(function () {
+        var ids = $('input[type=checkbox]:checked').map(function () {
+            return $(this).val();
+        }).get();
+        if (typeof ids === "undefined" || ids.length <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Checked to blog',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        } else {
+            deleteBlog(ids);
+        }
+    });
+
+    function deleteBlog(data) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'http://localhost:8080/api/delete',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        swalWithBootstrapButtons.fire({
+                            icon: 'success',
+                            title: 'Xoa thanh cong',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then((value) => {
+                            window.location = "http://localhost:8080/index"
+                        })
+                    },
+                    error: function (error) {
+                        console.log("error: " + error)
+                    }
+                });
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        });
+    }
+    	});
+
+</script>
+</body>
+</html>
