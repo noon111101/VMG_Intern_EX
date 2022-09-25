@@ -1,0 +1,48 @@
+
+.nav-item-1{
+    padding-right: 70px;
+}
+.nav-item{
+    padding-right: 50px;
+}
+
+h1{
+    font-weight: 900;
+    font-size: 60px;
+}
+
+#left1{
+    padding-top: 50px;
+    padding-left: 100px;
+}
+
+#letter1 #letter2 #letter3{
+    font-weight: 600;
+}
+
+.fa-check{
+   color: lime;
+}
+
+#number1{
+    border: solid 1px black;
+    border-radius: 50%;
+    color: white;
+    font-weight: 600;
+    background-color: green;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+#number2{
+    border: solid 1px black;
+    border-radius: 50%;
+    color: green;
+    font-weight: 600;
+    background-color: white;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+
+

@@ -29,4 +29,11 @@ public class Blog implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "blog")
     private List<ImageBlog> imageBlogs;
+
+    @ManyToOne
+    private User author;
+
+
+
+
 }
