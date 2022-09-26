@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>  
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+    <h1>My deepest, darkest question: {{existentialQuestion}}</h1>
+    <input v-model="existentialQuestion">
+
+    <p>You have decided this statement is {{statementIsTrue}}</p>
+<label>
+  <input type="checkbox" v-model="statementIsTrue"/>
+  Is this statement true?
+</label>
+
+<p>A list of names that rhyme: {{namesThatRhyme.join(', ')}}</p>
+<label>
+  <input type="checkbox" value="Daniel" v-model="namesThatRhyme"/>
+  Daniel
+</label>
+<label>
+  <input type="checkbox" value="Nathaniel" v-model="namesThatRhyme"/>
+  Nathaniel
+</label>
+<label>
+  <input type="checkbox" value="Hubert" v-model="namesThatRhyme"/>
+  Hubert
+</label>
+
+<p>How are you feeling today?</p>
+  <label>
+    <input type="radio" value="great" v-model="howAreYouFeeling" />
+    great
+  </label>
+  <label>
+    <input type="radio" value="wonderful" v-model="howAreYouFeeling" />
+    wonderful
+  </label>
+  <label>
+    <input type="radio" value="fantastic" v-model="howAreYouFeeling" />
+    fantastic
+  </label>
+  <p>I am also feeling <em>{{howAreYouFeeling}}</em> today.</p>
+  </div>
+</body>
+<script>
+    var dtbd = new Vue({
+        el:'#app',
+        data:{
+            existentialQuestion:"",
+            statementIsTrue: true,
+            namesThatRhyme: [],
+            howAreYouFeeling: "great"  
+        },
+    })
+</script>
+
+</html>
