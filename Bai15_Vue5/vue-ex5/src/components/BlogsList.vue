@@ -9,7 +9,7 @@
           <h1>{{blog.imageBlogs[0].imageName}}</h1>
           <img v-bind:src="blog.imageBlogs[0].imageName" width="100px" height="120px" alt="">
         </ul>
-
+        
     </div>
   </template>
   
