@@ -22,6 +22,21 @@
               class="alert-danger"
             >{{errors.first('username')}}</div>
           </div>
+          
+            <div class="form-group">
+              <label for="fullName">fullName</label>
+            <input
+              v-model="user.fullName"
+              v-validate="'required|min:3|max:20'"
+              type="text"
+              class="form-control"
+              name="fullName"
+            />
+            <div
+              v-if="submitted && errors.has('fullName')"
+              class="alert-danger"
+            >{{errors.first('fullName')}}</div>
+          </div>
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -72,7 +87,7 @@ export default {
   name: 'Register',
   data() {
     return {
-      user: new User('', '', ''),
+      user: new User('', '', '',''),
       submitted: false,
       successful: false,
       message: ''

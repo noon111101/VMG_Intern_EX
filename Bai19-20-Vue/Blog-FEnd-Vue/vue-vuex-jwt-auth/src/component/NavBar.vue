@@ -4,13 +4,15 @@
             <div class="header__top">
                 <div class="header__logo">
                     <a class="site-logo" href="index.html">
-                        <img src="../assets/images/logo.svg" alt="Homepage">
+                        <img src="../assets/logo.svg" alt="Homepage">
                     </a>
                 </div>
             </div>
             <nav class="header__nav-wrap">
                 <ul class="header__nav">
-                    <li class="current"><a href="index.html" title="">Home</a></li>
+                  <router-link to="/">
+                    <li class="current"><a title="">Home</a></li>
+                  </router-link>
                     <li class="has-children">
                         <a href="#0" title="">Categories</a>
                         <ul class="sub-menu">
@@ -23,7 +25,7 @@
                         </ul>
                     </li>
                     <li class="has-children">
-                        <a href="#0" title="">Blog Posts</a>
+                      <router-link to="/list-blog"><a title="">Blog Posts</a></router-link>
                         <ul class="sub-menu">
                             <li><a href="single-video.html">Video Post</a></li>
                             <li><a href="single-audio.html">Audio Post</a></li>
@@ -31,7 +33,8 @@
                             <li><a href="single-standard.html">Standard Post</a></li>
                         </ul>
                     </li>
-                    <li><a href="styles.html" title="">Styles</a></li>
+                    <router-link to="/login"><li><a title="">Login</a></li>
+                    </router-link>
                     <li><a href="page-about.html" title="">About</a></li>
                     <li><a href="page-contact.html" title="">Contact</a></li>
                 </ul> <!-- end header__nav -->
@@ -83,7 +86,11 @@ export default {
     },
 };
 </script>
-
+<script>
+export default {
+  
+}
+</script>
 <style scoped>
 
 .s-wrap {
@@ -102,7 +109,7 @@ export default {
   background-color: #151515;
   padding-top: 6.4rem;
   padding-right: 3.2rem;
-  padding-left: 4.4rem;
+  padding-left: 4rem;
   overflow-y: auto;
   overflow-x: hidden;
   vertical-align: top;
@@ -123,7 +130,9 @@ export default {
   border: none;
   transition: all 0.3s;
 }
-
+a{
+  text-decoration: none;
+}
 .header__logo img {
   width: 125px;
   height: 30px;
@@ -160,7 +169,7 @@ export default {
 
 .header__nav {
   list-style: none;
-  margin: 0;
+  margin: 0px;
   padding: 0;
   font-family: "Heebo", sans-serif;
   font-weight: 400;
@@ -177,7 +186,7 @@ export default {
 .header__nav li a {
   display: block;
   color: rgba(255, 255, 255, 0.6);
-  line-height: 4.4rem;
+  line-height: 44px;
 }
 
 .header__nav li.has-children {
@@ -209,6 +218,8 @@ export default {
   transform: rotate(225deg);
 }
 
+
+
 .header__nav li:hover > a,
 .header__nav li:focus > a {
   color: #ffffff;
@@ -233,9 +244,7 @@ export default {
   padding: 0.8rem 0 2rem 1.2rem;
 }
 
-.header__nav li ul a {
-  line-height: 3.2rem;
-}
+
 /* -------------------------------------------------------------------
  * ## header social
  * ------------------------------------------------------------------- */
@@ -249,56 +258,25 @@ export default {
 }
 
 .header__social li {
-  margin-right: 2px;
+  margin-right: 4px;
 }
-
-.header__social li:last-child {
-  margin-right: 0;
-}
-
+  
 .header__social a {
   display: block;
   background-color: rgba(255, 255, 255, 0.04);
   color: rgba(255, 255, 255, 0.5);
-  height: 3.6rem;
-  width: 3.6rem;
+  height: 36px;
+  width: 36px;
   border-radius: 50%;
   position: relative;
 }
 
-.header__social a::after {
-  z-index: 1;
-  content: "";
-  display: block;
-  height: 1.4rem;
-  width: 1.4rem;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  -webkit-transform: translate3d(-50%, -50%, 0);
-  transform: translate3d(-50%, -50%, 0);
-  transition: all 0.3s;
-  position: absolute;
-  left: 50%;
-  right: 0;
-  top: 50%;
-}
 
-.header__social a:hover::after {
-  height: 1.8rem;
-  width: 1.8rem;
-}
-
-.header__social span {
-  clip: rect(1px, 1px, 1px, 1px);
-  clip-path: inset(50%);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
+.header__social i {
   position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #ffffff;
 }
 
 

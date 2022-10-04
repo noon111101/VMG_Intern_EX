@@ -20,6 +20,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import locale from 'element-ui/lib/locale/lang/en';
 import ElementUI from 'element-ui';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 
 library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
@@ -27,11 +28,10 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
-
+Vue.config.devtools = true;
 Vue.use(VeeValidate);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 new Vue({
   router,

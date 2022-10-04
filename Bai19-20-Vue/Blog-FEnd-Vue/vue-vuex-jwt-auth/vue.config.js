@@ -1,10 +1,13 @@
 module.exports = {
-  devServer: {
-    port: 3000
+  configureWebpack: {
+    devtool: "source-map"
   }
-}
+};
 const {defineConfig} = require('@vue/cli-service')
 module.exports=defineConfig({
   transpileDependencies:true,
-  lintOnSave: false 
+  lintOnSave: false ,
+  devServer:{
+    port:3000
+  }
 })

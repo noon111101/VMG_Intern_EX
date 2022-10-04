@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-    <nav-blog class="col-lg-2"/>
-    <blogs-list class="col-lg-10"/>
-    
+    <div class="container-fluid ">
+      <div class="row">
+        <nav-blog class="col-lg-2" />
+        <blogs-list class="col-lg-10" />
+      </div>
+    </div>
+  
+  
   </div>
 </template>
 

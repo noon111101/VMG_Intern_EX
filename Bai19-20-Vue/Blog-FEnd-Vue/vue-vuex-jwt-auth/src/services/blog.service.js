@@ -2,8 +2,10 @@ import http from "../common/http-common";
 import {jsonRequest} from "../common/http-common";
 import authHeader from "./auth-header";
 class BlogDataService {
-    getAll(params) {
-        return http.get("/blog", {params, headers: authHeader()});
+    getAll(page) {
+        return http.get("/blogList", {params: {
+            page: page
+        }, headers: authHeader()});
     }
 
     create(data) {

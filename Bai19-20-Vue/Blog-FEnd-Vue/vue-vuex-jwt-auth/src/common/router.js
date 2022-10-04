@@ -20,6 +20,11 @@ export const router = new Router({
       component: () => import('../component/Blog/AddBlog.vue')
     },
     {
+      path: '/list-blog',
+      name: 'listBlog',
+      component: () => import('../component/Blog/ListBlog.vue')
+    },
+    {
       path: '/home',
       component: Home
     },
